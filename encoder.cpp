@@ -116,5 +116,17 @@ void ProResEncoder::encodeHeader()
 
     writeInteger(header, ar_fps);
     header += sizeof(ar_fps);
+
+    unsigned char primaries = ProRes::ColorPrimaries::Unknown;
+    writeInteger(header, primaries);
+    header += sizeof(primaries);
+
+    unsigned char characteristic = ProRes::TransferCharacteristic::Unknown;
+    writeInteger(header, characteristic);
+    header += sizeof(characteristic);
+
+    unsigned char matrix = ProRes::MatrixCoefficients::Unknown;
+    writeInteger(header, matrix);
+    header += sizeof(matrix);
 }
 

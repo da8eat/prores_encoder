@@ -38,6 +38,18 @@ struct ProRes
         };
     };
 
+    struct SourceColorSpace
+    {
+        enum
+        {
+            Unknown = 0,
+            uyvy,
+            v210,
+            v216,
+
+        };
+    };
+
     struct FrameRate
     {
         enum
@@ -64,6 +76,41 @@ struct ProRes
             _1x1 = 1,
             _4x3 = 2,
             _16x9 = 3
+        };
+    };
+
+    struct ColorPrimaries
+    {
+        enum
+        {
+            ITU709 = 1,
+            Unknown = 2,
+            ITU601_625 = 5,
+            ITU601_525 = 6,
+            ITU2020 = 9,
+        };
+    };
+
+    struct TransferCharacteristic
+    {
+        enum
+        {
+            ITU709 = 1,
+            Unknown = 2,
+            ST2084_PQ = 16,
+            BT2100_HLG = 18,
+        };
+    };
+
+    struct MatrixCoefficients
+    {
+        enum
+        {
+            ITU709 = 1,
+            Unknown = 2,
+            ITU601 = 6,
+            ITU202 = 9,
+
         };
     };
 
