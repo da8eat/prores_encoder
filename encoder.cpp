@@ -90,7 +90,10 @@ void ProResEncoder::encodeHeader()
     header += sizeof(FRAME_HEADER_SIZE);
 
     //basically apple set version 0 for all 422 colorspaces and set version to 1 if cs 444 or we encode alpha
-    unsigned short version = static_cast<unsigned short>(m_cs == ProRes::ColorSpace::ayuv16_444_planar);
+    unsigned char reserved = 0;
+    writeInteger(header, reserved);
+    header += sizeof(reserved);
+    unsigned char version = static_cast<unsigned char>(m_cs == ProRes::ColorSpace::ayuv16_444_planar);
     writeInteger(header, version);
     header += sizeof(version);
 
@@ -104,7 +107,7 @@ void ProResEncoder::encodeHeader()
     writeInteger(header, m_height);
     header += sizeof(m_height);
 
-    unsigned char chroma_field_flags = ((2 + static_cast<unsigned char>(m_cs == m_cs == ProRes::ColorSpace::ayuv16_444_planar)) << 6) +
+    unsigned char chroma_field_flags = ((2 + static_cast<unsigned char>(m_cs == ProRes::ColorSpace::ayuv16_444_planar)) << 6) +
             static_cast<unsigned char>(m_interlaced);
 
     writeInteger(header, chroma_field_flags);
@@ -128,5 +131,16 @@ void ProResEncoder::encodeHeader()
     unsigned char matrix = ProRes::MatrixCoefficients::Unknown;
     writeInteger(header, matrix);
     header += sizeof(matrix);
+
+    unsigned char src_cs_alpha = (ProRes::SourceColorSpace::uyvy << 4) + ProRes::AlphaType::NoAlpha; //actually we should know on this stage alpha type still dont set it yet
+    writeInteger(header, src_cs_alpha);
+    header += sizeof(src_cs_alpha);
+
+    writeInteger(header, reserved);
+    header += sizeof(reserved);
+
+    unsigned char chroma_luma_matrix = 3; //last 2 bits
+    writeInteger(header, chroma_luma_matrix);
+    header += sizeof(chroma_luma_matrix);
 }
 
