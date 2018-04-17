@@ -142,5 +142,9 @@ void ProResEncoder::encodeHeader()
     unsigned char chroma_luma_matrix = 3; //last 2 bits
     writeInteger(header, chroma_luma_matrix);
     header += sizeof(chroma_luma_matrix);
+
+    memcpy(header, &ProRes::QuantMatrix::Luma63[ProRes::QuantMatrix::index[m_quality]], 64);
+    header += 64;
+    memcpy(header, &ProRes::QuantMatrix::Chroma63[ProRes::QuantMatrix::index[m_quality]], 64);
 }
 
